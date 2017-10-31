@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuation status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="log-path">/tmp</Property>
+        <Property name="log-file-prefix">rabbitmqtest</Property>
+        <Property name="log-file">${log-path}/${log-file-prefix}.log</Property>
+        <Property name="log-file-pattern">${log-path}/${log-file-prefix}-%i.log.gz</Property>
+
+        <Property name="hibernate-log-prefix">hibernate</Property>
+        <Property name="hibernate-log-file">${log-path}/${hibernate-log-prefix}.log</Property>
+        <Property name="hibernate-log-file-pattern">${log-path}/${hibernate-log-prefix}-%i.log.gz</Property>
+        <Property name="pattern">%d{MMM dd HH:mm:ss,SSS 'GMT' yyyy }{GMT} %-5p [%t] %C{1}.%M:%L - %m%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern}" />
+            <Filters>
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="ACCEPT"/>
+            </Filters>
+        </Console>
+
+        <Console name="stderr" target="SYSTEM_ERR">
+            <PatternLayout pattern="${pattern}" />
+            <Filters>
+                <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </Console>
+
+        <RollingFile name="logfile"
+                     fileName="${log-file}"
+                     filePattern="${log-file-pattern}"
+                     append="true">
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="100"/>
+            <PatternLayout pattern="${pattern}"/>
+        </RollingFile>
+
+        <RollingFile name="hibernateLog"
+                     fileName="${hibernate-log-file}"
+                     filePattern="${hibernate-log-file-pattern}"
+                     append="true">
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="100"/>
+            <PatternLayout pattern="${pattern}"/>
+        </RollingFile>
+
+    </Appenders>
+    <Loggers>
+        <!--<Logger name="org.hibernate" level="trace" additivity="false">
+            <AppenderRef ref="stdout"/>
+            <AppenderRef ref="stderr"/>
+            <AppenderRef ref="hibernateLog"/>
+        </Logger>
+        <Logger name="org.hibernate.SQL" level="trace" additivity="false">
+            <AppenderRef ref="stdout"/>
+            <AppenderRef ref="stderr"/>
+            <AppenderRef ref="hibernateLog"/>
+        </Logger>
+        <Logger name="org.hibernate.type.descriptor.sql" level="trace" additivity="false">
+            <AppenderRef ref="stdout"/>
+            <AppenderRef ref="stderr"/>
+            <AppenderRef ref="hibernateLog"/>
+        </Logger>-->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="logfile"/>
+        </Root>
+    </Loggers>
+</Configuation>
