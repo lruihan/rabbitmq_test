@@ -41,7 +41,9 @@ public class Worker {
                     doWork(message);
                 } finally {
                     logger.info(" [x] Done");
-                    //ack manually
+                    //ack manually. It usually is auto ack. we could do some ops before ack.
+                    //RabbitMQ will eat more and more memory as it can't release the unacked message.
+                    //rabbitmqctl list_queues name messages_ready messages_unacknowledged
                     channel.basicAck(envelope.getDeliveryTag(), false);
                 }
             }
