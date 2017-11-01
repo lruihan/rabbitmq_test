@@ -1,6 +1,6 @@
-package com.fdu.rissy.direct;
+package com.fdu.rissy.topic;
 
-import com.fdu.rissy.util.QueueUtil;
+import com.fdu.rissy.direct.EmitLogDirect;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -11,12 +11,12 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * @author lins13
- * @date 11/1/17 2:43 PM
+ * @date 11/1/17 3:47 PM
  **/
-public class EmitLogDirect {
-    private static final String EXCHANGE_NAME = "direct_logs";
+public class EmitLogTopic {
+    private static final String EXCHANGE_NAME = "topic_logs";
 
-    private static final Logger logger = LoggerFactory.getLogger(EmitLogDirect.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmitLogTopic.class);
 
     public static void main(String[] argv)
             throws java.io.IOException, TimeoutException {
@@ -26,7 +26,7 @@ public class EmitLogDirect {
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
-        channel.exchangeDeclare(EXCHANGE_NAME, "direct");
+        channel.exchangeDeclare(EXCHANGE_NAME, "topic");
 
         String severity = getSeverity(argv);
         String message = getMessage(argv);
